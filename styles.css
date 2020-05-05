@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: Roboto;
 }
 
 /* elements */
@@ -24,6 +25,10 @@ button {
 #root {
   margin: 10px;
   width: 200px;
+}
+
+.featureBullets {
+  font-size: 14px;
 }
 
 #mouseover_overlay {

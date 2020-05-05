@@ -5,7 +5,7 @@
   "content_scripts": [
     {
       "matches": ["*://notion.so/*", "*://www.notion.so/*"],
-      "js": ["content.js", "popup.js"]
+      "js": ["content.js"]
     }
   ],
   "background": {
