@@ -14,7 +14,7 @@
   "browser_action": {
     "default_icon": "./assets/notion-icon.png",
     "default_popup": "popup.html",
-    "default_title": "Manipulate Notion."
+    "default_title": "Manipulate Notion"
   },
   "permissions": ["tabs"]
 }
