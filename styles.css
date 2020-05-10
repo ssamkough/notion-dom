@@ -27,7 +27,7 @@ button {
   width: 200px;
 }
 
-.featureBullets {
+#featureBullets {
   font-size: 14px;
 }
 
@@ -40,5 +40,5 @@ button {
   height: 0;
   background: rgba(0, 100, 255, 0.3);
   pointer-events: none;
-  transition: 0.2s; /* Just for fun */
+  transition: 0.2s;
 }
