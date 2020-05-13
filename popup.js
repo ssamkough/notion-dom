@@ -6,7 +6,7 @@ window.addEventListener("load", function load(event) {
     enableCheckbox();
   });
 
-  let addCheckboxBtn = document.getElementById("addCheckbox");
+  let addCheckboxBtn = document.getElementById("add-checkbox");
   addCheckboxBtn.addEventListener("click", function () {
     addCheckbox();
   });
