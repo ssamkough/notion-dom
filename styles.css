@@ -27,11 +27,11 @@ button {
   width: 200px;
 }
 
-#featureBullets {
+#feature-bullets {
   font-size: 14px;
 }
 
-#mouseover_overlay {
+#mouseover-overlay {
   position: fixed;
   z-index: 999999999999999;
   left: 0;
