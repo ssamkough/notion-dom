@@ -1,10 +1,10 @@
 let features = [];
 
 window.addEventListener("load", function load(event) {
-  let checkbox = document.querySelector("input[name=checkbox]");
-  checkbox.addEventListener("click", function () {
-    enableCheckbox();
-  });
+  // let checkbox = document.querySelector("input[name=checkbox]");
+  // checkbox.addEventListener("click", function () {
+  //   enableCheckbox();
+  // });
 
   let addCheckboxBtn = document.getElementById("add-checkbox");
   addCheckboxBtn.addEventListener("click", function () {

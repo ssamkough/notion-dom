@@ -77,6 +77,8 @@ function initializeElements() {
   popupOverlay.style.visibility = "hidden";
   popupOverlay.style.position = "absolute";
   popupOverlay.style.background = "#FFFFFF";
+  popupOverlay.style.borderRadius = "8px";
+  popupOverlay.style.boxShadow = "5px 10px 15px #575757";
   popupOverlay.style.width = "50vw";
   popupOverlay.style.height = "50vh";
   popupOverlay.style.top = "25%";
@@ -87,6 +89,7 @@ function initializeElements() {
   popupContainer.style.flexDirection = "column";
   popupContainer.style.justifyContent = "space-between";
   popupContainer.style.height = "100%";
+  popupContainer.style.padding = "20px";
 
   popupHeader.style.margin = "10px";
 
@@ -110,7 +113,7 @@ function initializeElements() {
 
   popupBtnClose.style.display = "inline-block";
   popupBtnClose.style.verticalAlign = "middle";
-  popupBtnClose.style.borderRadius = "30px";
+  popupBtnClose.style.borderRadius = "8px";
   popupBtnClose.style.margin = ".20rem";
   popupBtnClose.style.fontSize = "1rem";
   popupBtnClose.style.color = "#666666";
@@ -120,7 +123,7 @@ function initializeElements() {
 
   popupBtnSubmit.style.display = "inline-block";
   popupBtnSubmit.style.verticalAlign = "middle";
-  popupBtnSubmit.style.borderRadius = "30px";
+  popupBtnSubmit.style.borderRadius = "8px";
   popupBtnSubmit.style.margin = ".20rem";
   popupBtnSubmit.style.fontSize = "1rem";
   popupBtnSubmit.style.color = "#666666";
@@ -138,7 +141,6 @@ runRules();
 
 // element manipulation option functions
 function removeElementDisplay(element) {
-  console.log("remove element");
   if (element !== undefined) {
     element.style.display = "none";
   }
@@ -155,29 +157,42 @@ function removeElement(element) {
 }
 
 // modal functions
+function testFunc() {
+  console.log("test");
+}
+
 function closeModal() {
-  // console.log("close");
+  console.log("close");
   let bodyElement = document.getElementsByTagName("body")[0];
   bodyElement.style.backgroundColor = "transparent";
   bodyElement.style.opacity = "1";
 
   let popupOverlayElement = document.getElementsByClassName("popup-overlay")[0];
   popupOverlayElement.style.visibility = "hidden";
+  console.log("cancel popup: ", popupOverlayElement.style.visibility);
 }
 
-function processModal(targetElement) {
-  // console.log(targetElement);
+let elementToRemove;
+function processModal(element) {
   let radioBtns = document.getElementsByClassName("popup-body-radio");
   for (let i = 0; i < radioBtns.length; i++) {
     if (radioBtns[i].checked) {
-      if (radioBtns[i].value == "remove-element") {
-        removeElementDisplay(targetElement);
+      if (radioBtns[i].name == "remove-element") {
+        removeElementDisplay(elementToRemove);
       }
     }
   }
+
+  closeModal();
 }
 
-function clickedElement(element, overlay) {
+function clickedElement(element) {
+  elementToRemove = element.target;
+
+  document.removeEventListener("click", clickedElement);
+  document.removeEventListener("mouseover", highlightElement);
+
+  let overlay = document.querySelector("#mouseover-overlay");
   overlay.style.top = "0px";
   overlay.style.left = "0px";
   overlay.style.width = "0px";
@@ -190,48 +205,39 @@ function clickedElement(element, overlay) {
 
   let popupOverlayElement = document.getElementsByClassName("popup-overlay")[0];
   popupOverlayElement.style.visibility = "visible";
+
+  let submitBtn = document.getElementsByClassName("popup-submit-btn")[0];
+  submitBtn.addEventListener("click", processModal);
+}
+
+function highlightElement(element) {
+  let targetElement = element.target;
+  let rect = targetElement.getBoundingClientRect();
+
+  let overlay = document.querySelector("#mouseover-overlay");
+  overlay.style.top = rect.top + "px";
+  overlay.style.left = rect.left + "px";
+  overlay.style.width = rect.width + "px";
+  overlay.style.height = rect.height + "px";
+
+  // get all a elements and disable them
+  // let aElements = document.getElementsByTagName("a");
+  // for (let i = 0; i < aElements.length; i++) {
+  //   aElements[i].style.pointerEvents = "none";
+  // }
 }
 
 function gotMessage(message, sender, sendResponse) {
   if (message.txt === "add_feature") {
-    let overlay = document.querySelector("#mouseover-overlay");
-    document.addEventListener("mouseover", (e) => {
-      let elem = e.target;
-      let rect = elem.getBoundingClientRect();
-      overlay.style.top = rect.top + "px";
-      overlay.style.left = rect.left + "px";
-      overlay.style.width = rect.width + "px";
-      overlay.style.height = rect.height + "px";
-
-      // get all a elements and disable them
-      // let aElements = document.getElementsByTagName("a");
-      // for (let i = 0; i < aElements.length; i++) {
-      //   aElements[i].style.pointerEvents = "none";
-      // }
-    });
+    document.addEventListener("mouseover", highlightElement);
 
     // click on an element
-    document.addEventListener("click", (e) => {
-      if (document.removeEventListener) {
-        document.removeEventListener(
-          "mouseover",
-          clickedElement(e.target, overlay)
-        );
-
-        let submitBtn = document.getElementsByClassName("popup-submit-btn")[0];
-        submitBtn.addEventListener("click", processModal(e.target));
-      } else if (document.detachEvent) {
-        document.detachEvent("mouseover", clickedElement(e.target, overlay));
-
-        let submitBtn = document.getElementsByClassName("popup-submit-btn")[0];
-        submitBtn.addEventListener("click", processModal(e.target));
-      }
-    });
+    document.addEventListener("click", clickedElement);
 
     let popupCloseBtns = document.getElementsByClassName("popup-close-btn");
     for (let i = 0; i < popupCloseBtns.length; i++) {
       // console.log(popupCloseBtns[i]);
-      popupCloseBtns[i].addEventListener("click", closeModal());
+      popupCloseBtns[i].addEventListener("click", closeModal);
     }
   }
 }
